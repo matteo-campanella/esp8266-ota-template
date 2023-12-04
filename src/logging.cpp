@@ -1,4 +1,18 @@
 #include <Arduino.h>
+#include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
+
+#define UDP_BROADCAST_PORT 8888
+
+WiFiUDP udp;
+
+void udpBroadcast(const char *message) {
+    if (!WiFi.isConnected()) return;
+    if (udp.beginPacket(WiFi.broadcastIP(),UDP_BROADCAST_PORT)) {
+        udp.write(message);
+        udp.endPacket();
+    }
+}
 
 void log_print(const char *message) {
     Serial.print(message);
